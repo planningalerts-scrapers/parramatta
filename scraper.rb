@@ -41,7 +41,7 @@ results.each do |result|
   description = detail_page.search("div#b_ctl00_ctMain_info_app").text.split("Status:")[0].strip.split.join(" ")
   date_received = detail_page.search("div#b_ctl00_ctMain_info_app").text.split("Lodged: ")[1].split[0]
   date_received = Date.parse(date_received.to_s)
-  address = detail_page.search("div#b_ctl00_ctMain_info_prop").text.split("\n")[0].squeeze(' ')
+  address = detail_page.search("div#b_ctl00_ctMain_info_prop").text.split("\n")[0].squeeze(' ') rescue nil
 
   record = {
     'council_reference' => council_reference,
