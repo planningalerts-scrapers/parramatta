@@ -46,7 +46,7 @@ results.each do |result|
   record = {
     'council_reference' => council_reference,
     'description'       => description,
-    'date_received'     => date_received,
+    'date_received'     => date_received.to_s,
     'address'           => address,
     'info_url'          => info_url,
     'comment_url'       => comment_url,
