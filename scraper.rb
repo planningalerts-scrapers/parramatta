@@ -1,6 +1,12 @@
 require 'scraperwiki'
 require 'mechanize'
 
+class Hash
+  def has_blank?
+    self.values.any?{|v| v.nil? || v.length == 0}
+  end
+end
+
 if ( ENV['MORPH_PERIOD'] ) &&
    ( ENV['MORPH_PERIOD'] == "thismonth" ||
      ENV['MORPH_PERIOD'] == "lastmonth" ||
