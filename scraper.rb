@@ -19,7 +19,7 @@ if ( ENV['MORPH_PERIOD'] ) &&
     period = "last" + ENV['MORPH_PERIOD'].to_s + "days"
   end
 else
-  period = "thismonth"
+  period = "last14days"
 end
 
 base_url = "http://eplanning.parracity.nsw.gov.au/Pages/XC.Track/SearchApplication.aspx"
