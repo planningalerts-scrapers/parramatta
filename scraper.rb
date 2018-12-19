@@ -1,6 +1,12 @@
 require 'scraperwiki'
 require 'mechanize'
 
+class Hash
+  def has_blank?
+    self.values.any?{|v| v.nil? || v.length == 0}
+  end
+end
+
 if ( ENV['MORPH_PERIOD'] ) &&
    ( ENV['MORPH_PERIOD'] == "thismonth" ||
      ENV['MORPH_PERIOD'] == "lastmonth" ||
@@ -13,7 +19,7 @@ if ( ENV['MORPH_PERIOD'] ) &&
     period = "last" + ENV['MORPH_PERIOD'].to_s + "days"
   end
 else
-  period = "thismonth"
+  period = "last14days"
 end
 
 base_url = "http://eplanning.parracity.nsw.gov.au/Pages/XC.Track/SearchApplication.aspx"
@@ -41,23 +47,27 @@ results.each do |result|
   description = detail_page.search("div#b_ctl00_ctMain_info_app").text.split("Status:")[0].strip.split.join(" ")
   date_received = detail_page.search("div#b_ctl00_ctMain_info_app").text.split("Lodged: ")[1].split[0]
   date_received = Date.parse(date_received.to_s)
-  address = detail_page.search("div#b_ctl00_ctMain_info_prop").text.split("\n")[0].squeeze(' ')
+  address = detail_page.search("div#b_ctl00_ctMain_info_prop").text.split("\n")[0].squeeze(' ') rescue nil
 
   record = {
     'council_reference' => council_reference,
     'description'       => description,
-    'date_received'     => date_received,
+    'date_received'     => date_received.to_s,
     'address'           => address,
     'info_url'          => info_url,
     'comment_url'       => comment_url,
     'date_scraped'      => Date.today.to_s
   }
 
-  if (ScraperWiki.select("* from data where `council_reference`='#{record['council_reference']}'").empty? rescue true)
-    puts "Saving record " + record['council_reference'] + ", " + record['address']
-    #puts record
-    ScraperWiki.save_sqlite(['council_reference'], record)
+  unless record.has_blank?
+    if (ScraperWiki.select("* from data where `council_reference`='#{record['council_reference']}'").empty? rescue true)
+      puts "Saving record " + record['council_reference'] + ", " + record['address']
+#       puts record
+      ScraperWiki.save_sqlite(['council_reference'], record)
+    else
+      puts "Skipping already saved record " + record['council_reference']
+    end
   else
-    puts "Skipping already saved record " + record['council_reference']
+    puts "Something not right here: #{record}"
   end
 end
