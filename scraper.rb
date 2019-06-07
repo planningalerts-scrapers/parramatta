@@ -23,7 +23,6 @@ else
 end
 
 base_url = "http://eplanning.parracity.nsw.gov.au/Pages/XC.Track/SearchApplication.aspx"
-comment_url = "mailto:council@cityofparramatta.nsw.gov.au"
 
 # meaning of t parameter
 # %23427 - Development Applications
@@ -55,7 +54,6 @@ results.each do |result|
     'date_received'     => date_received.to_s,
     'address'           => address,
     'info_url'          => info_url,
-    'comment_url'       => comment_url,
     'date_scraped'      => Date.today.to_s
   }
 
