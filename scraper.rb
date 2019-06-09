@@ -37,8 +37,8 @@ results.each do |result|
     'description'       => description,
     'date_received'     => date_received.to_s,
     'address'           => address,
-    'info_url'          => info_url,
-    'date_scraped'      => Date.today.to_s
+    'date_scraped'      => Date.today.to_s,
+    'info_url'          => info_url
   }
 
   unless record.has_blank?
