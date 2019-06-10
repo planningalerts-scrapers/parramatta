@@ -11,3 +11,6 @@ Setup MORPH_PERIOD for data recovery, available options are
 * lastmonth
 
 Enjoy
+
+Note:
+XML feed on the site appears to be broken
